@@ -2,22 +2,28 @@ package org.oxbow.squirm
 
 import scala.xml.NodeSeq
 
-abstract class Component {
+trait Component {
     def render: NodeSeq 
 }
 
-protected object Renderer {
-   def renderComponents(components: Iterable[Component]) =
-      components.foldLeft(NodeSeq.Empty)(_ ++ _.render)
+abstract class Container( val components: Seq[Component] ) extends Component {
+    def render = renderComponents(components)
+    protected def renderComponents(components: Iterable[Component]) = components.foldLeft(NodeSeq.Empty)(_ ++ _.render)
 }
 
-import Renderer._
+//protected object Renderer {
+//   def renderComponents(components: Iterable[Component]) =
+//      components.foldLeft(NodeSeq.Empty)(_ ++ _.render)
+//}
+
+//import Renderer._
 
 //////// PAGE //////////////////////////////////////////////////////////////////////////////////////////////////
 
-case class Page(title: String = "", headerTitle: String = "")( components: Component* ) extends Component {
+case class Page(title: String = "", headerTitle: String = "")( override val components: Component* ) 
+     extends Container( components ) {
 
-   private def template( elements: => NodeSeq ) =
+   private def template( content: => NodeSeq ) =
 
     <html>
       <head>
@@ -34,12 +40,12 @@ case class Page(title: String = "", headerTitle: String = "")( components: Compo
       <body>
           <div data-role="page" data-add-back-btn="true" >
              { PageHeader( headerTitle ).render }
-             <div data-role="content">{elements}</div>
+             <div data-role="content">{content}</div>
           </div>
       </body>
     </html>
   
-   override def render: NodeSeq = template( renderComponents(components) ) 
+   override def render: NodeSeq = template( /*renderComponents(components)*/ super.render ) 
   
 
 }
@@ -56,13 +62,13 @@ case class PageHeader(title: String = "Header", dataTheme: String = "a" ) extend
 
 //////// LIST VIEW //////////////////////////////////////////////////////////////////////////////////////////////////
 
-case class ListView( insets: Boolean = true, content: NodeSeq  ) extends Component {
+case class ListView( insets: Boolean = true)( override val components: Seq[Component]  ) extends Container(components) {
    override val render: NodeSeq = 
-       <ul data-role="listview" data-inset={insets.toString} data-theme="d" >{content}</ul>
+       <ul data-role="listview" data-inset={insets.toString} data-theme="d" >{super.render}</ul>
 }
 
 object ListView {
-   def apply( components: Component* ): ListView = new ListView( insets = true, renderComponents(components))
+   def apply( components: Component* ): ListView = new ListView(true)(components)
 }
 
 case class LinkListItem( title: String, url: String ) extends Component {
@@ -76,11 +82,12 @@ case class PropertyListItem( title: String, value: String ) extends Component {
 
 //////// COLLAPSIBLES ////////////////////////////////////////////////////////////////////////////////////////////////
 
-case class Collapsible( title: String, collapsed: Boolean, components: List[Component] ) extends Component {
+case class Collapsible( title: String, collapsed: Boolean, override val components: List[Component] ) 
+  extends Container( components ) {
   override val render: NodeSeq = 
      <div data-role="collapsible" data-collapsed={collapsed.toString} data-theme="b" data-content-theme="d" >
          <h6>{title}</h6>
-         <p>{ ListView(true, renderComponents(components)).render}</p>
+         <p>{ ListView(true)(components).render}</p>
      </div>
 }
 
@@ -95,16 +102,17 @@ object Collapsible {
 }
 
 
-case class CollapsibleSet( elements: Collapsible* ) extends Component {
+case class CollapsibleSet( elements: Collapsible* ) extends Container( elements ) {
    override val render: NodeSeq = 
-      <div data-role="collapsible-set" >{ renderComponents(elements)}</div>
+      <div data-role="collapsible-set" >{ /*renderComponents(elements)*/ super.render }</div>
 }
 
 //////// FIELDS ////////////////////////////////////////////////////////////////////////////////////////////////
 
-case class Form( action: String, method: String ="post", message: String = "" )( components: Component* ) extends Component {
+case class Form( action: String, method: String ="post", message: String = "" )( components: Component* ) 
+     extends Container(components) {
 
-   // paramtrize data-ajax, data-transition and theme 
+   //TODO parametrize 'data-ajax', 'data-transition' and 'theme' 
     
    override def render: NodeSeq = 
        <form action={action} method={method} data-ajax="false" data-transition="pop">
@@ -113,7 +121,8 @@ case class Form( action: String, method: String ="post", message: String = "" )(
               var content = if ( !message.trim.isEmpty ) { 
                  Seq(PageHeader( message, "e" )) ++ components  
               } else components
-              renderComponents( content ) 
+              /*renderComponents( content )*/
+              super.render
           }
           </div>
        </form>
