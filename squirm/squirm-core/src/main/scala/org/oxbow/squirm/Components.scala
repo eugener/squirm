@@ -132,6 +132,9 @@ case class Field(title: String, id: String, fieldType: String = "text", required
 
 }
 
+case class PasswordField( override val title: String, override val id: String, override val required: Boolean = true, override val defaultValue: String = "" )
+     extends Field( title, id, "password", required, defaultValue )
+
 case class SubmitButton( title: String = "Submit" ) extends Component {
     override val render: NodeSeq = 
         <button type="submit" data-theme="b" name="submit" value="submit-value">{title}</button> 

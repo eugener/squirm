@@ -55,7 +55,7 @@ class SquirmTestServlet extends ScalatraServlet with UrlSupport with SquirmSuppo
     	    Form( "login" )(     
     	        
     	        Field( title = "User Name:", id = "user" ),
-    	        Field( title = "Password:", id = "pswd", fieldType = "password" ),
+    	        PasswordField( title = "Password:", id = "pswd" ),
     	        SubmitButton("Login")
     	    
     	    )
