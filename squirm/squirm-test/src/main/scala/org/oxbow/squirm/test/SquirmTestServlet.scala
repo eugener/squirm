@@ -20,7 +20,7 @@ class SquirmTestServlet extends ScalatraServlet with UrlSupport with SquirmSuppo
     
     get("/collapsible") {
         
-        Page("Squirm Test", "Collapsble")(
+        Page("Squirm Test", "Collapsible")(
 	        CollapsibleSet(
 	               Collapsible( "Collapsible", 
 			            ListView( 

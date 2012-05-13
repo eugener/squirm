@@ -41,7 +41,7 @@ Examples
         
         Page("Squirm Test", "Form")(
     	    
-    	    Form( "login" )(     
+    	    Form( url("/login"), message = session.getOrElse("login.message", "").toString )(     
     	        
     	        Field( title = "User Name:", id = "user" ),
     	        PasswordField( title = "Password:", id = "pswd" ),
