@@ -24,19 +24,15 @@ case class Page(title: String = "", headerTitle: String = "")( override val comp
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>{ title }</title>
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.css"/>
-        <link rel="stylesheet" href="docs/_assets/css/jqm-docs.css"/>
-        <script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
-        <script src="experiments/themeswitcher/jquery.mobile.themeswitcher.js"></script>
-        <script src="docs/_assets/js/jqm-docs.js"></script>
-        <script src="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.js"></script>
-      </head>
-      <body>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>      </head>
+       <body>
           <div data-role="page" data-add-back-btn="true" >
              { PageHeader( headerTitle ).render }
              <div data-role="content">{content}</div>
           </div>
-      </body>
+       </body>
     </html>
   
    override def render: NodeSeq = template( /*renderComponents(components)*/ super.render ) 
@@ -112,10 +108,9 @@ case class Form( action: String, method: String ="post", message: String = "" )(
        <form action={action} method={method} data-ajax="false" data-transition="pop">
 	      <div class="ui-body ui-body-d">
           {
-              var content = if ( !message.trim.isEmpty ) { 
-                 Seq(PageHeader( message, "e" )) ++ components  
-              } else components
-              renderComponents( content )
+              renderComponents( 
+                  if ( !message.trim.isEmpty )  
+                     Seq(PageHeader( message, "e" )) ++ components else components  )
           }
           </div>
        </form>
