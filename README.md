@@ -2,8 +2,6 @@ squirm
 ======
 Scala API for JQuery Mobile
 
-Examples
-===============================
 
         Page("Squirm Test", "ListView")(
             ListView( 
