@@ -11,12 +11,6 @@ abstract class Container( val components: Seq[Component] ) extends Component {
     protected def renderComponents(components: Iterable[Component]) = components.foldLeft(NodeSeq.Empty)(_ ++ _.render)
 }
 
-//protected object Renderer {
-//   def renderComponents(components: Iterable[Component]) =
-//      components.foldLeft(NodeSeq.Empty)(_ ++ _.render)
-//}
-
-//import Renderer._
 
 //////// PAGE //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -104,7 +98,7 @@ object Collapsible {
 
 case class CollapsibleSet( elements: Collapsible* ) extends Container( elements ) {
    override val render: NodeSeq = 
-      <div data-role="collapsible-set" >{ /*renderComponents(elements)*/ super.render }</div>
+      <div data-role="collapsible-set" >{ super.render }</div>
 }
 
 //////// FIELDS ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,8 +115,7 @@ case class Form( action: String, method: String ="post", message: String = "" )(
               var content = if ( !message.trim.isEmpty ) { 
                  Seq(PageHeader( message, "e" )) ++ components  
               } else components
-              /*renderComponents( content )*/
-              super.render
+              renderComponents( content )
           }
           </div>
        </form>
