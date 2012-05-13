@@ -52,7 +52,7 @@ class SquirmTestServlet extends ScalatraServlet with UrlSupport with SquirmSuppo
         
     	Page("Squirm Test", "Form")(
     	    
-    	    Form( "login" )(     
+    	    Form( url("/login"), message = session.getOrElse("login.message", "").toString )(     
     	        
     	        Field( title = "User Name:", id = "user" ),
     	        PasswordField( title = "Password:", id = "pswd" ),
@@ -62,6 +62,12 @@ class SquirmTestServlet extends ScalatraServlet with UrlSupport with SquirmSuppo
     	        
     	)
         
+    }
+    
+    post("/login") {
+        
+        session("login.message") = "Login Failed"
+        redirect(url("/form"))
     }
     
     
