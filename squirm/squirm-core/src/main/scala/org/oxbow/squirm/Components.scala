@@ -11,27 +11,11 @@ abstract class Container( val components: Seq[Component] ) extends Component {
     protected def renderComponents(components: Iterable[Component]) = components.foldLeft(NodeSeq.Empty)(_ ++ _.render)
 }
 
-object Squirm {
-    var localLibs = false
-}
-
 
 //////// PAGE //////////////////////////////////////////////////////////////////////////////////////////////////
 
 case class Page(title: String = "", headerTitle: String = "")( override val components: Component* ) 
      extends Container( components ) {
-    
-   private lazy val localPath = "/jqm/"
-   private lazy val remotePath = "http://code.jquery.com/"    
-   private lazy val remoteMobilePath = remotePath + "mobile/1.1.0/"
-       
-   private def getPath( mobile: Boolean = true, fileName: String ): String = 
-       ( if (Squirm.localLibs) localPath else if ( mobile) remoteMobilePath else remotePath ) + fileName  
-
-   private def jqmCss = getPath( true,  "jquery.mobile-1.1.0.min.css") 
-   private def jqJs   = getPath( false, "jquery-1.7.1.min.js" )
-   private def jqmJs  = getPath( true, "jquery.mobile-1.1.0.min.js")
-           
            
    private def template( content: => NodeSeq ) =
 
@@ -40,21 +24,36 @@ case class Page(title: String = "", headerTitle: String = "")( override val comp
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>{ title }</title>
-        <link rel="stylesheet" href={jqmCss} />
-		<script src={jqJs}></script>
-		<script src={jqmJs}></script>      
-       </head>
-       <body>
-          <div data-role="page" data-add-back-btn="true" >
-             { PageHeader( headerTitle ).render }
-             <div data-role="content">{content}</div>
-          </div>
-       </body>
+        <link rel="stylesheet" href={ Page.jqmCssPath }/>
+        <script src={ Page.jqJsPath }></script>
+        <script src={ Page.jqmJsPath }></script>
+      </head>
+      <body>
+        <div data-role="page" data-add-back-btn="true">
+          { PageHeader(headerTitle).render }
+          <div data-role="content">{ content }</div>
+        </div>
+      </body>
     </html>
   
    override def render: NodeSeq = template( /*renderComponents(components)*/ super.render ) 
-  
 
+}
+
+object Page {
+
+   var localPath: Option[String]  = None // local resource path for off-line testing
+   
+   private lazy val remotePath = "http://code.jquery.com/"
+   private lazy val remoteMobilePath = remotePath + "mobile/1.1.0/"
+   
+   private def remotePath(mobile: Boolean): String = if (mobile) remoteMobilePath else remotePath
+   private def path(mobile: Boolean): String = localPath.getOrElse( remotePath(mobile)  )
+
+   protected def jqmCssPath = path(mobile=true)  + "jquery.mobile-1.1.0.min.css" 
+   protected def jqJsPath   = path(mobile=false) + "jquery-1.7.1.min.js" 
+   protected def jqmJsPath  = path(mobile=true)  + "jquery.mobile-1.1.0.min.js"
+            
 }
 
 case class PageHeader(title: String = "Header", dataTheme: String = "a" ) extends Component {

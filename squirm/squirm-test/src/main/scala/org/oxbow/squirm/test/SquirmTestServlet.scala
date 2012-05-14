@@ -9,6 +9,10 @@ class SquirmTestServlet extends ScalatraServlet with UrlSupport with SquirmSuppo
 
     def contextPath = getServletContext.getContextPath
     
+    before() { // resource path for off-line testing
+       Page.localPath = Option(url("/jqm/"))
+    }
+    
     get("/") {
         Page("Squirm Test", "ListView")(
             ListView( 
