@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Squirm : Scala API for JQuery Mobile" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Squirm</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/eugener/squirm">View on GitHub</a>
+
+          <h1 id="project_title">Squirm</h1>
+          <h2 id="project_tagline">Scala API for JQuery Mobile</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/eugener/squirm/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/eugener/squirm/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>Overview</h3>
+
+<p>Squirm is simple Scala API for dynamic generation of mobile websites using JQuery Mobile framework. Since seeing is believing let's take a look at few examples:</p>
+
+<p>Page with the listview</p>
+
+<div class="highlight">
+<pre><span class="nc">Page</span><span class="o">(</span><span class="s">"Squirm Test"</span><span class="o">,</span> <span class="s">"ListView"</span><span class="o">)(</span>
+     <span class="nc">ListView</span><span class="o">(</span> 
+        <span class="nc">LinkListItem</span><span class="o">(</span> <span class="s">"Collapsible Set"</span><span class="o">,</span> <span class="n">url</span><span class="o">(</span><span class="s">"/collapsible"</span><span class="o">)</span> <span class="o">),</span>
+        <span class="nc">LinkListItem</span><span class="o">(</span> <span class="s">"Form"</span><span class="o">,</span> <span class="n">url</span><span class="o">(</span><span class="s">"/form"</span><span class="o">)</span> <span class="o">)</span>
+     <span class="o">)</span>   
+<span class="o">)</span>
+</pre>
+</div>
+
+
+<p>Page with collapsible set</p>
+
+<div class="highlight">
+<pre>    <span class="nc">Page</span><span class="o">(</span><span class="s">"Squirm Test"</span><span class="o">,</span> <span class="s">"Collapsble"</span><span class="o">)(</span>
+        <span class="nc">CollapsibleSet</span><span class="o">(</span>
+               <span class="nc">Collapsible</span><span class="o">(</span> <span class="s">"Collapsible"</span><span class="o">,</span> 
+                    <span class="nc">ListView</span><span class="o">(</span> 
+                       <span class="nc">PropertyListItem</span><span class="o">(</span> <span class="s">"name"</span><span class="o">,</span> <span class="s">"value"</span> <span class="o">),</span>
+                       <span class="nc">PropertyListItem</span><span class="o">(</span> <span class="s">"name"</span><span class="o">,</span> <span class="s">"value"</span> <span class="o">),</span>
+                       <span class="nc">PropertyListItem</span><span class="o">(</span> <span class="s">"name"</span><span class="o">,</span> <span class="s">"value"</span> <span class="o">)</span>
+                    <span class="o">)</span>
+               <span class="o">),</span>   
+               <span class="nc">Collapsible</span><span class="o">(</span> <span class="s">"Collapsible"</span><span class="o">,</span> 
+                    <span class="nc">ListView</span><span class="o">(</span> 
+                       <span class="nc">PropertyListItem</span><span class="o">(</span> <span class="s">"name"</span><span class="o">,</span> <span class="s">"value"</span> <span class="o">),</span>
+                       <span class="nc">PropertyListItem</span><span class="o">(</span> <span class="s">"name"</span><span class="o">,</span> <span class="s">"value"</span> <span class="o">),</span>
+                       <span class="nc">PropertyListItem</span><span class="o">(</span> <span class="s">"name"</span><span class="o">,</span> <span class="s">"value"</span> <span class="o">)</span>
+                    <span class="o">)</span>
+               <span class="o">),</span>    
+               <span class="nc">Collapsible</span><span class="o">(</span> <span class="s">"Collapsible"</span><span class="o">,</span> 
+                    <span class="nc">ListView</span><span class="o">(</span> 
+                       <span class="nc">PropertyListItem</span><span class="o">(</span> <span class="s">"name"</span><span class="o">,</span> <span class="s">"value"</span> <span class="o">),</span>
+                       <span class="nc">PropertyListItem</span><span class="o">(</span> <span class="s">"name"</span><span class="o">,</span> <span class="s">"value"</span> <span class="o">),</span>
+                       <span class="nc">PropertyListItem</span><span class="o">(</span> <span class="s">"name"</span><span class="o">,</span> <span class="s">"value"</span> <span class="o">)</span>
+                    <span class="o">)</span>
+               <span class="o">)</span>    
+         <span class="o">)</span>
+    <span class="o">)</span>
+</pre>
+</div>
+
+
+<p>Page with the form</p>
+
+<div class="highlight">
+<pre>    <span class="nc">Page</span><span class="o">(</span><span class="s">"Squirm Test"</span><span class="o">,</span> <span class="s">"Form"</span><span class="o">)(</span>
+
+        <span class="nc">Form</span><span class="o">(</span> <span class="n">url</span><span class="o">(</span><span class="s">"/login"</span><span class="o">)</span> <span class="o">)(</span>     
+
+            <span class="nc">Field</span><span class="o">(</span> <span class="n">title</span> <span class="k">=</span> <span class="s">"User Name:"</span><span class="o">,</span> <span class="n">id</span> <span class="k">=</span> <span class="s">"user"</span> <span class="o">),</span>
+            <span class="nc">PasswordField</span><span class="o">(</span> <span class="n">title</span> <span class="k">=</span> <span class="s">"Password:"</span><span class="o">,</span> <span class="n">id</span> <span class="k">=</span> <span class="s">"pswd"</span> <span class="o">),</span>
+            <span class="nc">SubmitButton</span><span class="o">(</span><span class="s">"Login"</span><span class="o">)</span>
+
+        <span class="o">)</span>
+
+    <span class="o">)</span>
+</pre>
+</div>
+
+
+<h3>Design</h3>
+
+<p>In Squirm each JQuery Mobile element is mapped to a Component, which can then be rendered using it's 'render' method.</p>
+
+<h3>Scalatra Support</h3>
+
+<p>Squirm comes with Scalatra support. Adding SquirmSupport trait to Scalatra servlet allows simply returning Squirm components for automatic rendering.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Squirm maintained by <a href="https://github.com/eugener">eugener</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
