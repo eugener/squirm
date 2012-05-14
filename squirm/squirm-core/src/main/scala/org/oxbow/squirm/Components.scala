@@ -91,7 +91,7 @@ case class PropertyListItem( title: String, value: String ) extends Component {
 case class Collapsible( title: String, collapsed: Boolean, override val components: List[Component] ) 
   extends Container( components ) {
   override val render: NodeSeq = 
-     <div data-role="collapsible" data-collapsed={collapsed.toString} data-theme="b" data-content-theme="d" >
+     <div data-role="collapsible" data-collapsed={collapsed.toString} >
          <h6>{title}</h6>
          <p>{ ListView(true)(components).render}</p>
      </div>
@@ -110,7 +110,7 @@ object Collapsible {
 
 case class CollapsibleSet( elements: Collapsible* ) extends Container( elements ) {
    override val render: NodeSeq = 
-      <div data-role="collapsible-set" >{ super.render }</div>
+      <div data-role="collapsible-set" data-theme="b" data-content-theme="d" >{ super.render }</div>
 }
 
 //////// FIELDS ////////////////////////////////////////////////////////////////////////////////////////////////
