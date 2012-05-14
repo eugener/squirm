@@ -14,7 +14,7 @@ abstract class Container( val components: Seq[Component] ) extends Component {
 
 //////// PAGE //////////////////////////////////////////////////////////////////////////////////////////////////
 
-case class Page(title: String = "", headerTitle: String = "")( override val components: Component* ) 
+case class Page(title: String = "", header: String = "")( override val components: Component* ) 
      extends Container( components ) {
            
    private def template( content: => NodeSeq ) =
@@ -30,7 +30,7 @@ case class Page(title: String = "", headerTitle: String = "")( override val comp
       </head>
       <body>
         <div data-role="page" data-add-back-btn="true">
-          { PageHeader(headerTitle).render }
+          { PageHeader(header).render }
           <div data-role="content">{ content }</div>
         </div>
       </body>
