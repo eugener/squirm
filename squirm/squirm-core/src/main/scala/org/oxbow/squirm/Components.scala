@@ -16,8 +16,11 @@ abstract class Container(val components: Seq[Component]) extends Component {
 
 //////// PAGE //////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 case class Page(title: String = "", header: String = "")(override val components: Component*)
     extends Container(components) {
+  
+    import Page._
 
     private def template(content: => NodeSeq) =
 
@@ -26,9 +29,9 @@ case class Page(title: String = "", header: String = "")(override val components
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
                 <title>{ title }</title>
-                <link rel="stylesheet" href={ Page.jqmCssPath }/>
-                <script src={ Page.jqJsPath }></script>
-                <script src={ Page.jqmJsPath }></script>
+                <link rel="stylesheet" href={ jqmCssPath }/>
+                <script src={ jqJsPath }></script>
+                <script src={ jqmJsPath }></script>
             </head>
             <body>
                 <div data-role="page" data-add-back-btn="true">
@@ -165,16 +168,26 @@ case class Button(title: String, link: String, theme: String = "d", icon: String
 
 //////// LAYOUTS ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-case class Columns(width: Int = 2)(override val components: Component*) extends Container(components) {
+object Grid {
+   val columnIds = "abcd"
+   def widthId( width: Int ) = columnIds(width-2)  
+}
 
-    private val colNames = "abcd"
+case class Grid(width: Int = 2)(override val components: Component*) extends Container(components) {
+    
+   import Grid._
+  
     override val render: NodeSeq = {
 
         val w = if (width > 5) 5 else width
 
-        <div class={ "ui-grid-" + colNames(w - 2) }>{
-            components.zipWithIndex.map(x => <div class={ "ui-block-" + colNames(x._2 % w) }>{ x._1.render }</div>)
-        }</div>
+        <div class={ "ui-grid-" + widthId(w) }>
+        {
+            components.zipWithIndex.map { case (component, index) => 
+              <div class={ "ui-block-" + columnIds(index % w) }>{ component.render }</div>
+            }
+        }
+        </div>
 
     }
 
