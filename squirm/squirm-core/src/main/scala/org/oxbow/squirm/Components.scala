@@ -173,7 +173,7 @@ object Grid {
    def widthId( width: Int ) = columnIds(width-2)  
 }
 
-case class Grid(width: Int = 2)(override val components: Component*) extends Container(components) {
+case class Grid(width: Int = 2)( override val components: Component*) extends Container(components) {
     
    import Grid._
   

@@ -17,7 +17,8 @@ class SquirmTestServlet extends ScalatraServlet with UrlSupport with SquirmSuppo
         Page("Squirm Test", "ListView")(
             ListView( 
 		       LinkListItem( "Collapsible Set", url("/collapsible") ),
-		       LinkListItem( "Form", url("/form") )
+		       LinkListItem( "Form", url("/form") ),
+		       LinkListItem( "Grid", url("/grid") )
 		    )   
         )
     }
@@ -61,6 +62,34 @@ class SquirmTestServlet extends ScalatraServlet with UrlSupport with SquirmSuppo
     	        Field( title = "User Name:", id = "user" ),
     	        PasswordField( title = "Password:", id = "pswd" ),
     	        SubmitButton("Login")
+    	    
+    	    )
+    	        
+    	)
+        
+    }
+    
+    get("/grid") {
+        
+    	Page("Squirm Test", "Grid")(
+    	    
+    	    Grid( width = 3 )(     
+    	        
+    	        SubmitButton("row 0 x column 0"),
+    	        SubmitButton("row 0 x column 1"),
+    	        SubmitButton("row 0 x column 3"),
+    	        SubmitButton("row 1 x column 0"),
+    	        SubmitButton("row 1 x column 1"),
+    	        SubmitButton("row 1 x column 3"),
+    	        SubmitButton("row 2 x column 0"),
+    	        SubmitButton("row 2 x column 1"),
+    	        SubmitButton("row 2 x column 3"),
+    	        SubmitButton("row 4 x column 0"),
+    	        SubmitButton("row 4 x column 1"),
+    	        SubmitButton("row 4 x column 3"),
+    	        SubmitButton("row 5 x column 0"),
+    	        SubmitButton("row 5 x column 1"),
+    	        SubmitButton("row 5 x column 3")
     	    
     	    )
     	        
