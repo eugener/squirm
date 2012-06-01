@@ -57,7 +57,7 @@ class SquirmTestServlet extends ScalatraServlet with UrlSupport with SquirmSuppo
         
     	Page("Squirm Test", "Form")(
     	    
-    	    Form( url("/login"), message = session.getOrElse("login.message", "").toString )(     
+    	    Form( url("/login"), message = session.get("login.message").asInstanceOf[Option[String]] )(     
     	        
     	        Field( title = "User Name:", id = "user" ),
     	        PasswordField( title = "Password:", id = "pswd" ),
@@ -77,19 +77,19 @@ class SquirmTestServlet extends ScalatraServlet with UrlSupport with SquirmSuppo
     	        
     	        SubmitButton("row 0 x column 0"),
     	        SubmitButton("row 0 x column 1"),
-    	        SubmitButton("row 0 x column 3"),
+    	        SubmitButton("row 0 x column 2"),
     	        SubmitButton("row 1 x column 0"),
     	        SubmitButton("row 1 x column 1"),
-    	        SubmitButton("row 1 x column 3"),
+    	        SubmitButton("row 1 x column 2"),
     	        SubmitButton("row 2 x column 0"),
     	        SubmitButton("row 2 x column 1"),
-    	        SubmitButton("row 2 x column 3"),
+    	        SubmitButton("row 2 x column 2"),
     	        SubmitButton("row 4 x column 0"),
     	        SubmitButton("row 4 x column 1"),
-    	        SubmitButton("row 4 x column 3"),
+    	        SubmitButton("row 4 x column 2"),
     	        SubmitButton("row 5 x column 0"),
     	        SubmitButton("row 5 x column 1"),
-    	        SubmitButton("row 5 x column 3")
+    	        SubmitButton("row 5 x column 2")
     	    
     	    )
     	        

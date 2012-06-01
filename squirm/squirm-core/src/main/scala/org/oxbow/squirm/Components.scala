@@ -119,7 +119,7 @@ case class CollapsibleSet(elements: Collapsible*) extends Container(elements) {
 
 //////// FIELDS ////////////////////////////////////////////////////////////////////////////////////////////////
 
-case class Form(action: String, method: String = "post", message: String = "")(components: Component*)
+case class Form(action: String, method: String = "post", message: Option[String] = None )(components: Component*)
     extends Container(components) {
 
     //TODO parametrize 'data-ajax', 'data-transition' and 'theme' 
@@ -129,8 +129,8 @@ case class Form(action: String, method: String = "post", message: String = "")(c
             <div class="ui-body ui-body-d">
                 {
                     renderComponents(
-                        if (!message.trim.isEmpty)
-                            Seq(PageHeader(message, "e")) ++ components else components)
+                        if (message.isDefined)
+                            Seq(PageHeader(message.get, "e")) ++ components else components)
                 }
             </div>
         </form>
