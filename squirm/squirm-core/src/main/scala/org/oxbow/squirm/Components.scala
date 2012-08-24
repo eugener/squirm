@@ -49,22 +49,24 @@ object Page {
 
     var localPath: Option[String] = None // local resource path for off-line testing
 
+    private val jqVersion  = "1.7.1"
+    private val jqmVersion = "1.1.1"
+    
     private lazy val remotePath = "http://code.jquery.com/"
-    private lazy val remoteMobilePath = remotePath + "mobile/1.1.0/"
+        
+    private lazy val jqPath  = localPath.getOrElse(remotePath)
+    private lazy val jqmPath = localPath.getOrElse(remotePath + "mobile/%s/".format(jqmVersion))
 
-    private def remotePath(mobile: Boolean): String = if (mobile) remoteMobilePath else remotePath
-    private def path(mobile: Boolean): String = localPath.getOrElse(remotePath(mobile))
-
-    protected def jqmCssPath = path(mobile = true) + "jquery.mobile-1.1.0.min.css"
-    protected def jqJsPath = path(mobile = false) + "jquery-1.7.1.min.js"
-    protected def jqmJsPath = path(mobile = true) + "jquery.mobile-1.1.0.min.js"
+    protected lazy val jqmCssPath = jqmPath + "jquery.mobile-%s.min.css".format(jqmVersion)
+    protected lazy val jqJsPath   = jqPath  + "jquery-%s.min.js".format(jqVersion)
+    protected lazy val jqmJsPath  = jqmPath + "jquery.mobile-%s.min.js".format(jqmVersion)
 
 }
 
 case class PageHeader(title: String = "Header", dataTheme: String = "a") extends Component {
 
     /**
-     * This method can be overriden to provide different content
+     * This method can be overridden to provide different content
      */
     protected val content: NodeSeq = <h1>{ title }</h1>
     override val render: NodeSeq = <div data-role="header" data-theme={ dataTheme }>{ content }</div>
