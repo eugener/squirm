@@ -1,13 +1,13 @@
 package org.oxbow.squirm
 
-import org.scalatra.ScalatraKernel
+import org.scalatra.ScalatraBase
 import scala.xml.NodeSeq
 
 /**
  * Support for component rendering in Scalatra 
  * Usage: add the trait to your Scalatra servlet
  */
-trait SquirmSupport extends ScalatraKernel {
+trait SquirmSupport extends ScalatraBase {
 
    override def renderResponse(actionResult: Any) = actionResult match {
      case c: Component => super.renderResponse( c.render )
