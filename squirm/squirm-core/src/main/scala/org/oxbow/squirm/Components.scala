@@ -1,9 +1,7 @@
 package org.oxbow.squirm
 
+import org.oxbow.squirm._
 import scala.xml.NodeSeq
-import scala.xml.Attribute
-import scala.xml.Text
-import scala.xml.Null
 
 trait Component {
     def render: NodeSeq
@@ -14,10 +12,17 @@ abstract class Container(val components: Seq[Component]) extends Component {
     protected def renderComponents(components: Iterable[Component]) = components.foldLeft(NodeSeq.Empty)(_ ++ _.render)
 }
 
+object Nada extends Component {
+    override val render = NodeSeq.Empty
+}
+
 //////// PAGE //////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-case class Page(title: String = "", header: String = "")(override val components: Component*)
+case class Page( title: String = "", 
+                 header: String = "", 
+                 footer: Option[PageFooter] = None,
+                 backButton: Boolean = true)(override val components: Component*)
     extends Container(components) {
   
     import Page._
@@ -34,9 +39,10 @@ case class Page(title: String = "", header: String = "")(override val components
                 <script src={ jqmJsPath }></script>
             </head>
             <body>
-                <div data-role="page" data-add-back-btn="true">
+                <div data-role="page" data-add-back-btn={ backButton.attr }>
                     { PageHeader(header).render }
                     <div data-role="content">{ content }</div>
+                    { footer.getOrElse(Nada).render }
                 </div>
             </body>
         </html>
@@ -70,6 +76,19 @@ case class PageHeader(title: String = "Header", dataTheme: String = "a") extends
      */
     protected val content: NodeSeq = <h1>{ title }</h1>
     override val render: NodeSeq = <div data-role="header" data-theme={ dataTheme }>{ content }</div>
+
+}
+
+
+case class PageFooter(title: String = "Footer", dataTheme: String = "a", fixedPosition: Boolean = true ) 
+    extends Component {
+
+    /**
+     * This method can be overridden to provide different content
+     */
+    protected val content: NodeSeq = <h1>{ title }</h1>
+    override val render: NodeSeq = 
+         <div data-role="footer" data-theme={ dataTheme }  data-position= { fixedPosition.attr("fixed") } >{ content }</div>
 
 }
 
@@ -143,7 +162,7 @@ case class Field(title: String, id: String, fieldType: String = "text", required
     override val render: NodeSeq =
         <div data-role="fieldcontain">
             <label for={ id }>{ title }</label>
-            <input type={ fieldType } name={ id } id={ id } value={ defaultValue } class={ if (required) "required" else "" }/>
+            <input type={ fieldType } name={ id } id={ id } value={ defaultValue } class={ required.attr("required") }/>
         </div>
 
 }
@@ -160,7 +179,7 @@ case class SubmitButton(title: String = "Submit", icon: String="") extends Compo
 
 case class ControlGroup(horizontal: Boolean)(override val components: Component*) extends Container(components) {
     override val render: NodeSeq = {
-        <div data-role="controlgroup" data-type={ if (horizontal) "horizontal" else null }>{ super.render }</div>
+        <div data-role="controlgroup" data-type={ horizontal.attr("horizontal") }>{ super.render }</div>
     }
 }
 
