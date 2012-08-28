@@ -69,7 +69,10 @@ object Page {
 
 }
 
-case class PageHeader(title: String = "Header", dataTheme: String = "a", fixedPosition: Boolean = true) extends Component {
+case class PageHeader(
+        title: String = "Header", 
+        dataTheme: String = "a", 
+        fixedPosition: Boolean = true) extends Component {
 
     /**
      * This method can be overridden to provide different content
@@ -80,7 +83,10 @@ case class PageHeader(title: String = "Header", dataTheme: String = "a", fixedPo
 }
 
 
-case class PageFooter(title: String = "Footer", dataTheme: String = "a", fixedPosition: Boolean = true )(override val components:Component*) 
+case class PageFooter(
+        title: String = "Footer", 
+        dataTheme: String = "a", 
+        fixedPosition: Boolean = true )(override val components:Component*) 
     extends Container(components) {
 
     /**
@@ -94,6 +100,11 @@ case class PageFooter(title: String = "Footer", dataTheme: String = "a", fixedPo
 
 }
 
+
+case class NavBar(override val components: Component*) extends Container(components) {
+    override val render: NodeSeq = <div data-role="navbar"><ul>{ super.render }</ul></div>
+}
+
 //////// LIST VIEW //////////////////////////////////////////////////////////////////////////////////////////////////
 
 case class ListView(insets: Boolean = true)(override val components: Seq[Component]) extends Container(components) {
@@ -105,23 +116,27 @@ object ListView {
     def apply(components: Component*): ListView = new ListView(true)(components)
 }
 
-case class LinkListItem(title: String, url: String, icon: String = null, transition: String = "flip" ) extends Component {
+case class LinkListItem(
+        title: String, 
+        url: String, 
+        icon: String = null, 
+        transition: String = "flip" ) extends Component {
     override val render: NodeSeq = <li><a href={ url } data-icon={icon} data-transition={transition} >{ title }</a></li>
 }
 
-case class PropertyListItem(title: String, value: String) extends Component {
+case class PropertyListItem(
+        title: String, 
+        value: String) extends Component {
     override val render: NodeSeq =
         <li>{ title } <p class="ui-li-aside"><strong>{ value }</strong></p></li>
 }
 
-case class NavBar(override val components: Component*) extends Container(components) {
-    override val render: NodeSeq =
-        <div data-role="navbar"><ul>{ super.render }</ul></div>
-}
-
 //////// COLLAPSIBLES ////////////////////////////////////////////////////////////////////////////////////////////////
 
-case class Collapsible(title: String, collapsed: Boolean, override val components: List[Component])
+case class Collapsible(
+        title: String, 
+        collapsed: Boolean, 
+        override val components: List[Component])
     extends Container(components) {
     override val render: NodeSeq =
         <div data-role="collapsible" data-collapsed={ collapsed.toString }>
@@ -147,7 +162,10 @@ case class CollapsibleSet(elements: Collapsible*) extends Container(elements) {
 
 //////// FIELDS ////////////////////////////////////////////////////////////////////////////////////////////////
 
-case class Form(action: String, method: String = "post", message: Option[String] = None )(components: Component*)
+case class Form(
+        action: String, 
+        method: String = "post", 
+        message: Option[String] = None )(components: Component*)
     extends Container(components) {
 
     //TODO parametrize 'data-ajax', 'data-transition' and 'theme' 
@@ -165,7 +183,12 @@ case class Form(action: String, method: String = "post", message: Option[String]
 
 }
 
-case class Field(title: String, id: String, fieldType: String = "text", required: Boolean = true, defaultValue: String = "") extends Component {
+case class Field(
+        title: String, 
+        id: String, 
+        fieldType: String = "text", 
+        required: Boolean = true, 
+        defaultValue: String = "") extends Component {
     override val render: NodeSeq =
         <div data-role="fieldcontain">
             <label for={ id }>{ title }</label>
@@ -174,7 +197,11 @@ case class Field(title: String, id: String, fieldType: String = "text", required
 
 }
 
-case class PasswordField(override val title: String, override val id: String, override val required: Boolean = true, override val defaultValue: String = "")
+case class PasswordField(
+        override val title: String, 
+        override val id: String, 
+        override val required: Boolean = true, 
+        override val defaultValue: String = "")
     extends Field(title, id, "password", required, defaultValue)
 
 case class SubmitButton(title: String = "Submit", icon: String="") extends Component {
@@ -190,7 +217,11 @@ case class ControlGroup(horizontal: Boolean)(override val components: Component*
     }
 }
 
-case class Button(title: String, link: String, theme: String = "d", icon: String="") extends Component {
+case class Button(
+        title: String, 
+        link: String, 
+        theme: String = "d", 
+        icon: String="") extends Component {
     override val render: NodeSeq = <a href={ link } data-role="button" data-theme={ theme } data-icon={icon}>{ title }</a>
 }
 
