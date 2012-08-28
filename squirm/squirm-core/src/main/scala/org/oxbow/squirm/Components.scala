@@ -69,26 +69,28 @@ object Page {
 
 }
 
-case class PageHeader(title: String = "Header", dataTheme: String = "a") extends Component {
+case class PageHeader(title: String = "Header", dataTheme: String = "a", fixedPosition: Boolean = true) extends Component {
 
     /**
      * This method can be overridden to provide different content
      */
-    protected val content: NodeSeq = <h1>{ title }</h1>
-    override val render: NodeSeq = <div data-role="header" data-theme={ dataTheme }>{ content }</div>
+    protected lazy val content: NodeSeq = <h1>{ title }</h1>
+    override val render: NodeSeq = <div data-role="header" data-theme={ dataTheme } data-position= { fixedPosition.attr("fixed") }>{ content }</div>
 
 }
 
 
-case class PageFooter(title: String = "Footer", dataTheme: String = "a", fixedPosition: Boolean = true ) 
-    extends Component {
+case class PageFooter(title: String = "Footer", dataTheme: String = "a", fixedPosition: Boolean = true )(override val components:Component*) 
+    extends Container(components) {
 
     /**
      * This method can be overridden to provide different content
      */
-    protected val content: NodeSeq = <h1>{ title }</h1>
+    protected lazy val content: NodeSeq = <h1>{ title }</h1>
     override val render: NodeSeq = 
-         <div data-role="footer" data-theme={ dataTheme }  data-position= { fixedPosition.attr("fixed") } >{ content }</div>
+         <div data-role="footer" data-theme={ dataTheme } data-position= { fixedPosition.attr("fixed") } >{ 
+            if ( components.isEmpty ) content else super.render
+         }</div>
 
 }
 
@@ -110,6 +112,11 @@ case class LinkListItem(title: String, url: String, transition: String = "flip" 
 case class PropertyListItem(title: String, value: String) extends Component {
     override val render: NodeSeq =
         <li>{ title } <p class="ui-li-aside"><strong>{ value }</strong></p></li>
+}
+
+case class NavBar(override val components: Component*) extends Container(components) {
+    override val render: NodeSeq =
+        <div data-role="navbar"><ul>{ super.render }</ul></div>
 }
 
 //////// COLLAPSIBLES ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,6 +193,7 @@ case class ControlGroup(horizontal: Boolean)(override val components: Component*
 case class Button(title: String, link: String, theme: String = "d", icon: String="") extends Component {
     override val render: NodeSeq = <a href={ link } data-role="button" data-theme={ theme } data-icon={icon}>{ title }</a>
 }
+
 
 //////// LAYOUTS ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
