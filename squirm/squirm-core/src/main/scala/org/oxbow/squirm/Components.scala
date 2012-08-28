@@ -84,8 +84,8 @@ object ListView {
     def apply(components: Component*): ListView = new ListView(true)(components)
 }
 
-case class LinkListItem(title: String, url: String) extends Component {
-    override val render: NodeSeq = <li><a href={ url }>{ title }</a></li>
+case class LinkListItem(title: String, url: String, transition: String = "flip" ) extends Component {
+    override val render: NodeSeq = <li><a href={ url } data-transition={transition} >{ title }</a></li>
 }
 
 case class PropertyListItem(title: String, value: String) extends Component {
