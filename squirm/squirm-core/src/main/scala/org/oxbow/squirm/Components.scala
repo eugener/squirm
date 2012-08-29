@@ -72,7 +72,7 @@ object Page {
     protected lazy val jqmCssPath = jqmPath + "jquery.mobile-%s.min.css".format(jqmVersion)
     protected lazy val jqJsPath   = jqPath  + "jquery-%s.min.js".format(jqVersion)
     protected lazy val jqmJsPath  = jqmPath + "jquery.mobile-%s.min.js".format(jqmVersion)
-
+    
 }
 
 case class PageHeader(
@@ -126,7 +126,7 @@ case class LinkListItem(
         title: String, 
         url: String, 
         icon: String = null, 
-        transition: String = "flip",
+        transition: String = null,
         dialog: Boolean = false ) extends Component {
     override val render: NodeSeq = 
     <li><a href={ url } data-icon={icon} data-transition={transition} data-rel={dialog.attr("dialog")}>{ title }</a></li>

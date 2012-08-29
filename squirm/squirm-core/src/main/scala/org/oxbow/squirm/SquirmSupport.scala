@@ -2,6 +2,7 @@ package org.oxbow.squirm
 
 import org.scalatra.ScalatraBase
 import scala.xml.NodeSeq
+import org.oxbow.squirm._
 
 /**
  * Support for component rendering in Scalatra 
@@ -15,4 +16,21 @@ trait SquirmSupport extends ScalatraBase {
      case _ => super.renderResponse(actionResult)
    }
     
+   def confirm( ok: String = "OK", cancelUrl: String )( components:Component* ): Component = {
+        
+        val comps = components.toSeq :+ 
+                    SubmitButton( ok, icon = "check") :+
+                    Button( "Cancel", link = cancelUrl, icon = "delete", back=true )
+        
+        
+        new Page( title = "Confirmation", header = "Confirmation" )(
+             Form( action = url(request.pathInfo) )(
+                 comps: _*    
+	             //SubmitButton( ok, icon = "check"),   
+	             //Button( "Cancel", link = url( cancelUrl ), icon = "delete", back=true )
+             )
+        )
+    }    
+   
+   
 }
