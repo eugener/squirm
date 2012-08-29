@@ -120,8 +120,10 @@ case class LinkListItem(
         title: String, 
         url: String, 
         icon: String = null, 
-        transition: String = "flip" ) extends Component {
-    override val render: NodeSeq = <li><a href={ url } data-icon={icon} data-transition={transition} >{ title }</a></li>
+        transition: String = "flip",
+        dialog: Boolean = false ) extends Component {
+    override val render: NodeSeq = 
+    <li><a href={ url } data-icon={icon} data-transition={transition} data-rel={dialog.attr("dialog")}>{ title }</a></li>
 }
 
 case class PropertyListItem(
