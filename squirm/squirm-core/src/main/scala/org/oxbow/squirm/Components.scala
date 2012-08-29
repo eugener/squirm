@@ -223,8 +223,11 @@ case class Button(
         title: String, 
         link: String, 
         theme: String = "d", 
-        icon: String="") extends Component {
-    override val render: NodeSeq = <a href={ link } data-role="button" data-theme={ theme } data-icon={icon}>{ title }</a>
+        icon: String=null,
+        back: Boolean = false ) extends Component {
+    override val render: NodeSeq = 
+    
+    <a href={ link } data-role="button" data-theme={ theme } data-icon={icon} data-rel={back.attr("back")}>{ title }</a>
 }
 
 
