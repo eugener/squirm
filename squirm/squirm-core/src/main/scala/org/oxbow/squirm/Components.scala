@@ -2,6 +2,7 @@ package org.oxbow.squirm
 
 import org.oxbow.squirm._
 import scala.xml.NodeSeq
+import scala.xml.XML
 
 trait Component {
     def render: NodeSeq
@@ -15,6 +16,11 @@ abstract class Container(val components: Seq[Component]) extends Component {
 object Nada extends Component {
     override val render = NodeSeq.Empty
 }
+
+case class Markup( content: NodeSeq ) extends Component {
+    override val render: NodeSeq = content
+}
+
 
 //////// PAGE //////////////////////////////////////////////////////////////////////////////////////////////////
 
