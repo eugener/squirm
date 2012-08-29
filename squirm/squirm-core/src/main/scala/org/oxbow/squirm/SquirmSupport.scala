@@ -16,7 +16,12 @@ trait SquirmSupport extends ScalatraBase {
      case _ => super.renderResponse(actionResult)
    }
     
-   def confirm( ok: String = "OK", cancelUrl: String )( components:Component* ): Component = {
+   /**
+    * Confirmation page. 
+    * By default page form will be posted to the same URL
+    * OK/Cancel buttons added automatically 
+    */
+   def confirm( ok: String = "OK", cancelUrl: String, action: String = url(request.pathInfo) )( components:Component* ): Component = {
         
         val comps = components.toSeq :+ 
                     SubmitButton( ok, icon = "check") :+
@@ -24,11 +29,7 @@ trait SquirmSupport extends ScalatraBase {
         
         
         new Page( title = "Confirmation", header = "Confirmation" )(
-             Form( action = url(request.pathInfo) )(
-                 comps: _*    
-	             //SubmitButton( ok, icon = "check"),   
-	             //Button( "Cancel", link = url( cancelUrl ), icon = "delete", back=true )
-             )
+             Form( action = action )( comps: _* )    
         )
     }    
    
