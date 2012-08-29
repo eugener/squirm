@@ -205,6 +205,19 @@ case class Field(
 
 }
 
+
+case class TextArea(
+        title: String, 
+        id: String, 
+        required: Boolean = true, 
+        defaultValue: String = "") extends Component {
+    override val render: NodeSeq =
+        <div data-role="fieldcontain">
+            <label for={ id }>{ title }</label>
+            <textarea name={ id } id={ id } value={ defaultValue } class={ required.attr("required") }/>
+        </div>
+
+}
 case class PasswordField(
         override val title: String, 
         override val id: String, 
