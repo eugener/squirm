@@ -127,9 +127,14 @@ case class LinkListItem(
         url: String, 
         icon: String = null, 
         transition: String = null,
-        dialog: Boolean = false ) extends Component {
+        dialog: Boolean = false,
+        noajax: Boolean = false ) extends Component {
     override val render: NodeSeq = 
-    <li><a href={ url } data-icon={icon} data-transition={transition} data-rel={dialog.attr("dialog")}>{ title }</a></li>
+    <li><a href={ url } 
+           data-icon={icon} 
+           data-transition={transition} 
+           data-rel={dialog.attr("dialog")}
+           data-ajax={noajax.attr("false")}>{ title }</a></li>
 }
 
 case class PropertyListItem(
