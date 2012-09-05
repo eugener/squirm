@@ -55,7 +55,7 @@ class SquirmTestServlet extends ScalatraServlet with UrlSupport with SquirmSuppo
         
     	Page("Squirm Test", "Form")(
     	    
-    	    Form( url("/login"), message = session.get("login.message").asInstanceOf[Option[String]] )(     
+    	    Form( action=url("/login"), message = session.get("login.message").asInstanceOf[Option[String]] )(     
     	        
     	        Field( title = "User Name:", id = "user" ),
     	        PasswordField( title = "Password:", id = "pswd" ),

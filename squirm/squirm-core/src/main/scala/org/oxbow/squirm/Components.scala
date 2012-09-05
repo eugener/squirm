@@ -3,6 +3,9 @@ package org.oxbow.squirm
 import org.oxbow.squirm._
 import scala.xml.NodeSeq
 import scala.xml.XML
+import java.util.UUID
+import java.text.SimpleDateFormat
+import java.util.Date
 
 trait Component {
     def render: NodeSeq
@@ -33,15 +36,18 @@ case class Page( title: String = "",
   
     import Page._
 
-    private def template(content: => NodeSeq) =
+    private def template(content: => NodeSeq) = {
 
         <html>
             <head>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
                 <title>{ title }</title>
-                <link rel="stylesheet" href={ jqmCssPath }/>
                 <script src={ jqJsPath }></script>
+                <script src={ jqValidatePath }></script>
+                <script type="text/javascript"> {formValidationScript}</script>  
+                <link rel="stylesheet" href={ jqmCssPath }/>
+                <style type="text/css">{formValidationCss}</style>
                 <script src={ jqmJsPath }></script>
             </head>
             <body>
@@ -52,8 +58,38 @@ case class Page( title: String = "",
                 </div>
             </body>
         </html>
+                    
+    }
 
     override def render: NodeSeq = template( /*renderComponents(components)*/ super.render)
+    
+    private lazy val formValidationScript = scala.xml.Unparsed(
+        """$(document).bind('pageinit', function(event){ 
+               $('form').validate({
+                });                   
+           })"""
+    )
+    
+    private lazy val formValidationCss = 
+        """ input.error {
+               border-width: 2px !important;
+		       border-color: #cd0a0a !important;
+		       background: #fef1ec;
+		    }
+            textarea.error {
+               width: 100%;
+               border-width: 2px !important;
+		       border-color: #cd0a0a !important;
+		       background: #fef1ec;
+		    }
+            label.error {
+               float: left;
+               width: 100%;
+               padding: 3px;
+		       color: #cd0a0a !important;
+		    }
+        
+        """
 
 }
 
@@ -62,16 +98,20 @@ object Page {
     var localPath: Option[String] = None // local resource path for off-line testing
 
     private val jqVersion  = "1.7.1"
+    private val jqvVersion = "1.9"
     private val jqmVersion = "1.1.1"
     
     private lazy val remotePath = "http://code.jquery.com/"
+    private lazy val remoteMsPath = "http://ajax.aspnetcdn.com/ajax/"
         
     private lazy val jqPath  = localPath.getOrElse(remotePath)
     private lazy val jqmPath = localPath.getOrElse(remotePath + "mobile/%s/".format(jqmVersion))
+    private lazy val jqvPath = localPath.getOrElse(remoteMsPath + "jquery.validate/%s/".format(jqvVersion))
 
     protected lazy val jqmCssPath = jqmPath + "jquery.mobile-%s.min.css".format(jqmVersion)
     protected lazy val jqJsPath   = jqPath  + "jquery-%s.min.js".format(jqVersion)
     protected lazy val jqmJsPath  = jqmPath + "jquery.mobile-%s.min.js".format(jqmVersion)
+    protected lazy val jqValidatePath = jqvPath + "jquery.validate.min.js"
     
 }
 
@@ -184,7 +224,7 @@ case class Form(
     //TODO parametrize 'data-ajax', 'data-transition' and 'theme' 
 
     override def render: NodeSeq =
-        <form action={ action } method={ method } data-ajax="false" data-transition="pop">
+        <form class="validate" action={ action } method={ method } data-ajax="false" data-transition="pop">
             <div class="ui-body ui-body-d">
                 {
                     renderComponents(
@@ -202,11 +242,12 @@ case class Field(
         fieldType: String = "text", 
         required: Boolean = true, 
         defaultValue: String = "") extends Component {
+    
     override val render: NodeSeq =
-        <div data-role="fieldcontain">
+        <fieldset data-role="fieldcontain">
             <label for={ id }>{ title }</label>
             <input type={ fieldType } name={ id } id={ id } value={ defaultValue } class={ required.attr("required") }/>
-        </div>
+        </fieldset>
 
 }
 
@@ -216,13 +257,15 @@ case class TextArea(
         id: String, 
         required: Boolean = true, 
         defaultValue: String = "") extends Component {
+    
     override val render: NodeSeq =
-        <div data-role="fieldcontain">
+        <fieldset data-role="fieldcontain">
             <label for={ id }>{ title }</label>
             <textarea name={ id } id={ id } value={ defaultValue } class={ required.attr("required") }/>
-        </div>
+        </fieldset>
 
 }
+
 case class PasswordField(
         override val title: String, 
         override val id: String, 
@@ -232,7 +275,7 @@ case class PasswordField(
 
 case class SubmitButton(title: String = "Submit", icon: String="") extends Component {
     override val render: NodeSeq =
-        <button type="submit" data-theme="b" data-icon={icon} name="submit" value="submit-value" >{ title }</button>
+        <input type="submit" data-theme="b" data-icon={icon} name="submit" value={ title } />
 }
 
 //////// BUTTONS ////////////////////////////////////////////////////////////////////////////////////////////////////////
